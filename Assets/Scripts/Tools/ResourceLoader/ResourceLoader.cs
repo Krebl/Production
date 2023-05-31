@@ -15,5 +15,10 @@ namespace Game.Production.Tools
             _loadedSprite[path] = sprite;
             return sprite;
         }
+
+        public GameObject LoadPrefab(string path)
+        {
+            return Resources.Load<GameObject>(path);
+        }
     }
 }

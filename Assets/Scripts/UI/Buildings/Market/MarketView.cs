@@ -17,6 +17,8 @@ namespace Game.Production.UI
 
         [SerializeField] private Button _buttonClose;
         [SerializeField] private Button _buttonSelling;
+        [SerializeField] private SelectorEntityView _selectorEntityForSelling;
+        [SerializeField] private CostView _cost;
 
         private Ctx _ctx;
 
@@ -26,6 +28,10 @@ namespace Game.Production.UI
             _buttonClose.OnClickAsObservable().Subscribe(_ => _ctx.close?.Invoke()).AddTo(_ctx.viewDisposable);
             _buttonSelling.OnClickAsObservable().Subscribe(_ => _ctx.selling?.Invoke()).AddTo(_ctx.viewDisposable);
         }
+
+        public SelectorEntityView SelectorEntityForSelling => _selectorEntityForSelling;
+
+        public CostView Cost => _cost;
     } 
 }
 
