@@ -1,0 +1,16 @@
+{
+    "name": "startGame",
+    "rootNamespace": "",
+    "references": [
+        "GUID:d13de9c6497519f49998e65e8456fc94"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

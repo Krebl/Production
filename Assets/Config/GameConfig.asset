@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cbd1c62482cc0d4798b15831cb59088, type: 3}
+  m_Name: GameConfig
+  m_EditorClassIdentifier: 
+  CurrencyForWin:
+    Id: coins
+    Count: 10
+  Currency: {fileID: 11400000, guid: 3908d6bb1e598ce43928ed9e1b8b5e95, type: 2}
+  GameResource: {fileID: 11400000, guid: 7ef9560ee0713b648b1b9e7a2da59d7c, type: 2}
+  CraftItems: {fileID: 11400000, guid: 6b32be99973c61b4885895e2c54797e0, type: 2}
+  Receipts: {fileID: 11400000, guid: 69f2d4aca2ce1ee41822a05819d7fdb3, type: 2}
+  Buildings: {fileID: 11400000, guid: fe378dd07a296174ab28dcaeadd3ebd9, type: 2}

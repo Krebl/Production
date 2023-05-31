@@ -1,10 +1,11 @@
 using UnityEngine;
+using Game.Production.Config;
 
 namespace Game.Production
 {
-    public class Root : MonoBehaviour
+    internal class Root : MonoBehaviour
     {
-        
+        [SerializeField] private GameConfig _gameConfig;
     }
 }
 
