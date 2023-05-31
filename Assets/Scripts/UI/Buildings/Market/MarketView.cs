@@ -12,16 +12,19 @@ namespace Game.Production.UI
         {
             public CompositeDisposable viewDisposable;
             public Action close;
+            public Action selling;
         }
 
         [SerializeField] private Button _buttonClose;
+        [SerializeField] private Button _buttonSelling;
 
-        private CraftItemView.Ctx _ctx;
+        private Ctx _ctx;
 
-        public void SetCtx(CraftItemView.Ctx ctx)
+        public void SetCtx(Ctx ctx)
         {
             _ctx = ctx;
             _buttonClose.OnClickAsObservable().Subscribe(_ => _ctx.close?.Invoke()).AddTo(_ctx.viewDisposable);
+            _buttonSelling.OnClickAsObservable().Subscribe(_ => _ctx.selling?.Invoke()).AddTo(_ctx.viewDisposable);
         }
     } 
 }
