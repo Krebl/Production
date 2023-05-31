@@ -1,12 +1,9 @@
 {
-    "name": "startGame",
+    "name": "Converters",
     "rootNamespace": "",
     "references": [
-        "GUID:d13de9c6497519f49998e65e8456fc94",
-        "GUID:2747d796e71aa9f4e907494b776c628d",
         "GUID:fdd0d320f0ef7a549b57ccc0de8191bc",
-        "GUID:1fd6a1a29a90c404fadf3f971878a6e5",
-        "GUID:560b04d1a97f54a4e82edc0cbbb69285"
+        "GUID:d13de9c6497519f49998e65e8456fc94"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
