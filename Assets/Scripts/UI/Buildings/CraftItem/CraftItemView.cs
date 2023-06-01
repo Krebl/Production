@@ -4,6 +4,7 @@ using Game.Production.Tools;
 using UniRx;
 using UnityEngine.UI;
 using Game.Production.Model;
+using TMPro;
 
 namespace Game.Production.UI
 {
@@ -18,6 +19,7 @@ namespace Game.Production.UI
             public IReadOnlyReactiveProperty<bool> isProcessState;
             public IReadOnlyReactiveProperty<CraftItem> resultItem;
             public IResourceLoader resourceLoader;
+            public IReadOnlyReactiveProperty<int> secondsLeftForEndCraft;
         }
 
         [SerializeField] private Button _buttonClose;
@@ -29,6 +31,7 @@ namespace Game.Production.UI
         [SerializeField] private SelectorEntityView _firstIngredient;
         [SerializeField] private SelectorEntityView _secondIngredient;
         [SerializeField] private Image iconResult;
+        [SerializeField] private TextMeshProUGUI _labelTimer;
 
         public void SetCtx(Ctx ctx)
         {
@@ -44,6 +47,10 @@ namespace Game.Production.UI
             _ctx.resultItem.Subscribe(result =>
             {
                 iconResult.sprite = _ctx.resourceLoader.LoadSprite(result.IconPath);
+            }).AddTo(_ctx.viewDisposable);
+            _ctx.secondsLeftForEndCraft.Subscribe(seconds =>
+            {
+                _labelTimer.text = seconds.ToString();
             }).AddTo(_ctx.viewDisposable);
         }
 

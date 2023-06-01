@@ -6,7 +6,8 @@ namespace Game.Production.Logic
 {
     internal interface IReadOnlyCraftItemLogic
     {
-        bool CanCraft(EntityWithCount[] ingredients);
+        Receipt GetReceipt(EntityWithCount[] ingredients);
+        Receipt GetReceipt(CraftItem craftItem);
         IReadOnlyReactiveDictionary<string, ReactiveProperty<int>> Timers { get; }
         IReadOnlyReactiveDictionary<string, CraftItem> CurrentCraftingItem { get; }
     }

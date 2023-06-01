@@ -6,7 +6,8 @@ namespace Game.Production.Command
     {
         public struct Ctx
         {
-            public Receipt receipt;
+            public string idBuilding;
+            public CraftItem craftItem;
         }
 
         private readonly Ctx _ctx;
@@ -18,18 +19,20 @@ namespace Game.Production.Command
         
         public void Apply(Logic.Logic logic)
         {
-            if(_ctx.receipt == null)
+            if(_ctx.craftItem == null)
                 return;
-            foreach (var cost in _ctx.receipt.CostCraft)
+            Receipt receipt = logic.craftItem.GetReceipt(_ctx.craftItem);
+            foreach (var cost in receipt.CostCraft)
             {
                 if(!logic.inventory.EnoughResource(cost.Id, cost.Count))
                     return;
             }
 
-            foreach (var cost in _ctx.receipt.CostCraft)
+            foreach (var cost in receipt.CostCraft)
             {
                 logic.inventory.DecreaseResource(cost.Id, cost.Count);
             }
+            logic.craftItem.StartCraft(_ctx.idBuilding, _ctx.craftItem);
         }
     }
 }

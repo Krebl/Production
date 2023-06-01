@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Game.Production.Command;
 using Game.Production.Model;
+using Game.Production.Logic;
 using Game.Production.Tools;
 using UniRx;
 using UnityEngine;
@@ -21,18 +22,45 @@ namespace Game.Production.UI
             public ICommandExecuter commandExecuter;
             public IReadOnlyList<CraftItem> availableitem;
             public IReadOnlyList<EntityWithCount> availableResource;
+            public IReadOnlyCraftItemLogic logic;
+            public string idBuilding;
         }
 
         private readonly Ctx _ctx;
         private readonly ReactiveProperty<EntityWithCount> _firstIngredient;
         private readonly ReactiveProperty<EntityWithCount> _secondIngredient;
         private readonly ReactiveProperty<CraftItem> _result;
+        
+        private ReactiveProperty<int> _secondsForEndCraft;
+        private IDisposable _subscriptionOnTimer;
 
         public CraftItemManager(Ctx ctx)
         {
             _firstIngredient = new ReactiveProperty<EntityWithCount>();
             _secondIngredient = new ReactiveProperty<EntityWithCount>();
             _result = new ReactiveProperty<CraftItem>();
+            _secondsForEndCraft = new ReactiveProperty<int>();
+            if (_ctx.logic.CurrentCraftingItem.TryGetValue(_ctx.idBuilding, out CraftItem craftItem))
+                _result.Value = craftItem;
+            if (_ctx.logic.Timers.TryGetValue(_ctx.idBuilding, out ReactiveProperty<int> seconds))
+                _secondsForEndCraft.Value = seconds.Value;
+            AddDispose(_ctx.logic.Timers.ObserveAdd().Subscribe(addEvent =>
+            {
+                if (addEvent.Key == _ctx.idBuilding)
+                {
+                    _subscriptionOnTimer?.Dispose();
+                    _subscriptionOnTimer =
+                        addEvent.Value.Subscribe(secondsLeft => _secondsForEndCraft.Value = secondsLeft);
+                }
+            }));
+            AddDispose(_ctx.logic.Timers.ObserveRemove().Subscribe(removeEvent =>
+            {
+                if (removeEvent.Key == _ctx.idBuilding)
+                {
+                    _subscriptionOnTimer?.Dispose();
+                    _secondsForEndCraft.Value = 0;
+                }
+            }));
             _ctx = ctx;
             LoadOnScene();
         }
@@ -44,41 +72,81 @@ namespace Game.Production.UI
             CraftItemView view = objOnScene.GetComponent<CraftItemView>();
             CompositeDisposable viewDisposable = AddDispose(new CompositeDisposable());
             ReactiveProperty<bool> isProcess = new ReactiveProperty<bool>();
-
+            ReactiveProperty<bool> interactableSelectors = new ReactiveProperty<bool>();
+            AddDispose(isProcess.Subscribe(processing => interactableSelectors.Value = !processing));
             view.SetCtx(new CraftItemView.Ctx
             {
                 viewDisposable = viewDisposable,
                 start = StartCraft,
-                stop = StopCraft,
+                stop = () => StopCraft(true),
                 close = _ctx.close,
                 isProcessState = isProcess,
                 resourceLoader = _ctx.resourceLoader,
-                resultItem = _result
+                resultItem = _result,
+                secondsLeftForEndCraft = _secondsForEndCraft
             });
             view.FirstIngredient.SetCtx(new SelectorEntityView.Ctx
             {
                 resourceLoader = _ctx.resourceLoader,
                 variants = _ctx.availableResource,
                 viewDisposable = viewDisposable,
-                currentSelect = _firstIngredient
+                currentSelect = _firstIngredient,
+                interactable = interactableSelectors
             });
             view.SecondIngredient.SetCtx(new SelectorEntityView.Ctx
             {
                 resourceLoader = _ctx.resourceLoader,
                 variants = _ctx.availableResource,
                 viewDisposable = viewDisposable,
-                currentSelect = _secondIngredient
+                currentSelect = _secondIngredient,
+                interactable = interactableSelectors
             });
+            AddDispose(_secondsForEndCraft.Subscribe(seconds =>
+            {
+                isProcess.Value = seconds > 0;
+                if(seconds <= 0 && _ctx.logic.Timers.ContainsKey(_ctx.idBuilding))
+                    StopCraft(false);
+            }));
+            AddDispose(_firstIngredient.Subscribe(_ => DefineReceipt()));
+            AddDispose(_secondIngredient.Subscribe(_ => DefineReceipt()));
+
+            void DefineReceipt()
+            {
+                if (_firstIngredient.Value == null || _secondIngredient.Value == null)
+                    _result.Value = null;
+                Receipt receipt = _ctx.logic.GetReceipt(new EntityWithCount[]
+                    {_firstIngredient.Value, _secondIngredient.Value});
+                _result.Value = receipt != null ? receipt.Result : null;
+            }
         }
 
         private void StartCraft()
         {
-            
+            if(_result.Value == null)
+                return;
+            _ctx.commandExecuter.Execute(new InstructionCraftItem(new InstructionCraftItem.Ctx
+            {
+                craftItem = _result.Value,
+                idBuilding = _ctx.idBuilding
+            }));
         }
 
-        private void StopCraft()
+        private void StopCraft(bool isForce)
         {
-            
+            if(_result.Value == null)
+                return;
+            _ctx.commandExecuter.Execute(new InstructionStopCraftItem(new InstructionStopCraftItem.Ctx
+            {
+                idBuilding = _ctx.idBuilding,
+                isForceStop = isForce,
+                craftItem = _result.Value
+            }));
+        }
+
+        protected override void OnDispose()
+        {
+            _subscriptionOnTimer?.Dispose();
+            base.OnDispose();
         }
     }
 }

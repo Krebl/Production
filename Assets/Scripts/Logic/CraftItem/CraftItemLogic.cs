@@ -30,7 +30,7 @@ namespace Game.Production.Logic
             _ctx = ctx;
         }
 
-        public bool CanCraft(EntityWithCount[] ingredients)
+        public Receipt GetReceipt(EntityWithCount[] ingredients)
         {
             bool found = false;
             foreach (var receipt in _ctx.receipts)
@@ -47,10 +47,21 @@ namespace Game.Production.Logic
                 }
 
                 if (found)
-                    return true;
+                    return receipt;
             }
 
-            return false;
+            return null;
+        }
+
+        public Receipt GetReceipt(CraftItem craftItem)
+        {
+            foreach (var receipt in _ctx.receipts)
+            {
+                if (receipt.Result.Id == craftItem.Id)
+                    return receipt;
+            }
+
+            return null;
         }
 
         public IReadOnlyReactiveDictionary<string, ReactiveProperty<int>> Timers => _timers;

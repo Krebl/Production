@@ -26,8 +26,21 @@ namespace Game.Production.Command
             {
                 if(_ctx.craftItem == null)
                     return;
+                Receipt receipt = logic.craftItem.GetReceipt(_ctx.craftItem);
+                foreach (var cost in receipt.CostCraft)
+                {
+                    if(!logic.inventory.EnoughResource(cost.Id, cost.Count))
+                    {
+                        logic.craftItem.StopCraft(_ctx.idBuilding);
+                        return;
+                    }
+                }
+
+                foreach (var cost in receipt.CostCraft)
+                {
+                    logic.inventory.DecreaseResource(cost.Id, cost.Count);
+                }
                 logic.craftItem.StartCraft(_ctx.idBuilding, _ctx.craftItem);
-                logic.inventory.AddCraftItem(_ctx.craftItem);
             }
         }
     }  
