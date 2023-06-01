@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using Game.Production.Tools;
 using Game.Production.Command;
 using Game.Production.Model;
 using Game.Production.Logic;
+using Game.Production.UI;
 
 namespace Game.Production.Start
 {
@@ -20,10 +22,21 @@ namespace Game.Production.Start
         }
 
         private readonly Ctx _ctx;
+        private IDisposable _mainMenu;
 
         public GamePlay(Ctx ctx)
         {
             _ctx = ctx;
+            _mainMenu = new MainScreenManager(new MainScreenManager.Ctx
+            {
+                
+            });
+        }
+
+        protected override void OnDispose()
+        {
+            _mainMenu?.Dispose();
+            base.OnDispose();
         }
     }
 }
