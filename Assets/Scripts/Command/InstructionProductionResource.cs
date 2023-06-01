@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Game.Production.Model;
 
 
 namespace Game.Production.Command
@@ -10,7 +6,8 @@ namespace Game.Production.Command
     {
         public struct Ctx
         {
-            
+            public string idBuilding;
+            public string idResource;
         }
 
         private readonly Ctx _ctx;
@@ -22,7 +19,9 @@ namespace Game.Production.Command
         
         public void Apply(Logic.Logic logic)
         {
-
+            if(string.IsNullOrEmpty(_ctx.idBuilding))
+                return;
+            logic.production.StartProduction(_ctx.idBuilding, _ctx.idResource);
         }
     }
 }

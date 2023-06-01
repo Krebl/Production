@@ -52,6 +52,7 @@ namespace Game.Production.UI
                 variants = _ctx.availableItems,
                 viewDisposable = viewDisposable,
                 resourceLoader = _ctx.resourceLoader,
+                interactable = new ReactiveProperty<bool>(true)
             });
             view.Cost.SetCtx(new CostView.Ctx
             {

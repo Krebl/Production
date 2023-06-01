@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using Game.Production.Model;
+using Game.Production.Tools;
 using UniRx;
 
 namespace Game.Production.Logic
 {
-    internal class CraftItemLogic : IReadOnlyCraftItemLogic
+    internal class CraftItemLogic : BaseDisposable, IReadOnlyCraftItemLogic
     {
         public struct Ctx
         {
@@ -17,6 +18,11 @@ namespace Game.Production.Logic
         public CraftItemLogic(Ctx ctx)
         {
             _timers = new ReactiveDictionary<string, ReactiveProperty<int>>();
+            TimersTools timersTools = new TimersTools(new TimersTools.Ctx
+            {
+                timers = _timers
+            });
+            AddDispose(timersTools);
             _ctx = ctx;
         }
 

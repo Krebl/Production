@@ -24,9 +24,9 @@ namespace Game.Production.Command
                 logic.production.StopProduction(_ctx.idBuilding);
             else
             {
-                logic.production.StartProduction(_ctx.idBuilding);
                 if(_ctx.resource == null)
                     return;
+                logic.production.StartProduction(_ctx.idBuilding, _ctx.resource.Id);
                 logic.inventory.AddResource(_ctx.resource);  
             }
         }

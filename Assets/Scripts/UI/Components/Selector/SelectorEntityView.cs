@@ -16,6 +16,7 @@ namespace Game.Production.UI
             public IReactiveProperty<EntityWithCount> currentSelect;
             public IReadOnlyList<EntityWithCount> variants;
             public IResourceLoader resourceLoader;
+            public IReadOnlyReactiveProperty<bool> interactable;
         }
 
         [SerializeField] 
@@ -36,6 +37,8 @@ namespace Game.Production.UI
         {
             _ctx = ctx;
             SetDefaultIndex();
+            _ctx.interactable.Subscribe(interactable => _buttonNext.interactable = interactable)
+                .AddTo(_ctx.viewDisposable);
             _buttonNext.OnClickAsObservable().Subscribe(_ => SelectNext()).AddTo(_ctx.viewDisposable);
         }
 

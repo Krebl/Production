@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using Game.Production.Tools;
+using TMPro;
 using UniRx;
 using UnityEngine.UI;
 
@@ -15,11 +16,13 @@ namespace Game.Production.UI
             public Action start;
             public Action stop;
             public IReadOnlyReactiveProperty<bool> isProcessState;
+            public IReadOnlyReactiveProperty<int> secondsLeftForEndProduction;
         }
 
         [SerializeField] private Button _buttonClose;
         [SerializeField] private Button _buttonStart;
         [SerializeField] private Button _buttonStop;
+        [SerializeField] private TextMeshProUGUI _labelTimer;
 
         [SerializeField] private SelectorEntityView _selectorResource;
 
@@ -35,6 +38,10 @@ namespace Game.Production.UI
             {
                 _buttonStart.gameObject.SetActive(!isProcess);
                 _buttonStop.gameObject.SetActive(isProcess);
+            }).AddTo(_ctx.viewDisposable);
+            _ctx.secondsLeftForEndProduction.Subscribe(seconds =>
+            {
+                _labelTimer.text = seconds.ToString();
             }).AddTo(_ctx.viewDisposable);
         }
 
