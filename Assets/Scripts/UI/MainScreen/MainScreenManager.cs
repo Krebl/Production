@@ -22,6 +22,7 @@ namespace Game.Production.UI
         public MainScreenManager(Ctx ctx)
         {
             _ctx = ctx;
+            LoadOnScene();
         }
 
         private void LoadOnScene()
