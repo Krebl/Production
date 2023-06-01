@@ -5,3 +5,4 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Model")]
 [assembly: InternalsVisibleTo("Logic")]
 [assembly: InternalsVisibleTo("StartGame")]
+[assembly: InternalsVisibleTo("Location")]
