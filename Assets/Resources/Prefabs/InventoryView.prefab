@@ -423,6 +423,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _buttonClose: {fileID: 1520132952833205552}
+  _gridForCraftItem: {fileID: 7140103929427430092}
+  _gridForResources: {fileID: 6418155522387844469}
 --- !u!1 &3757430772105154552
 GameObject:
   m_ObjectHideFlags: 0
@@ -789,6 +791,7 @@ GameObject:
   - component: {fileID: 6418155522387844469}
   - component: {fileID: 8624288625163623367}
   - component: {fileID: 433134693517050022}
+  - component: {fileID: 5684371169765542472}
   m_Layer: 5
   m_Name: gridResources
   m_TagString: Untagged
@@ -854,3 +857,27 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5684371169765542472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8067237201179838994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 30
+    m_Right: 30
+    m_Top: 30
+    m_Bottom: 30
+  m_ChildAlignment: 0
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 170, y: 170}
+  m_Spacing: {x: 20, y: 20}
+  m_Constraint: 0
+  m_ConstraintCount: 2

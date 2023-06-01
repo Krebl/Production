@@ -315,6 +315,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _buttonStart: {fileID: 872932954583481286}
+  select1: {fileID: 7942269616293747773}
+  select2: {fileID: 4156380350648601379}
+  select3: {fileID: 1711870801965669697}
 --- !u!1 &2320118048508986757
 GameObject:
   m_ObjectHideFlags: 0
