@@ -27,10 +27,20 @@ namespace Game.Production.Start
            {
                currency = currency,
            });
+           InventoryLogic inventoryLogic = new InventoryLogic(new InventoryLogic.Ctx());
+           BankLogic bankLogic = new BankLogic(new BankLogic.Ctx
+           {
+               availableCurrency = hub.availableCurrency,
+               currency = currency
+           });
+           ProductionLogic production = new ProductionLogic(new ProductionLogic.Ctx());
             
             Logic.Logic logic = new Logic.Logic
             {
-                win = winLogic
+                win = winLogic,
+                inventory = inventoryLogic,
+                bank = bankLogic,
+                production = production
             };
         }
     }
