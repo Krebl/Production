@@ -13,7 +13,7 @@ namespace Game.Production.UI
         public struct Ctx
         {
             public CompositeDisposable viewDisposable;
-            public ReactiveProperty<EntityWithCount> currentSelect;
+            public IReactiveProperty<EntityWithCount> currentSelect;
             public IReadOnlyList<EntityWithCount> variants;
             public IResourceLoader resourceLoader;
         }

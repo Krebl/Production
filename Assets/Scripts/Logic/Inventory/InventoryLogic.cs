@@ -34,6 +34,16 @@ namespace Game.Production.Logic
             return !string.IsNullOrEmpty(id) && _craftItems.ContainsKey(id);
         }
 
+        public bool EnoughCraftItem(string id, int count)
+        {
+            return ContainCraftItem(id) && _craftItems[id].Count >= count;
+        }
+        
+        public bool EnoughResource(string id, int count)
+        {
+            return ContainResource(id) && _resources[id].Count >= count;
+        }
+
         public IReadOnlyReactiveDictionary<string, EntityWithCount> Resources => _resources;
         public IReadOnlyReactiveDictionary<string, CraftItem> CraftItems => _craftItems;
 

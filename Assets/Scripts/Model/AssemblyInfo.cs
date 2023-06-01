@@ -5,3 +5,4 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Logic")]
 [assembly: InternalsVisibleTo("Converters")]
 [assembly: InternalsVisibleTo("StartGame")]
+[assembly: InternalsVisibleTo("Command")]

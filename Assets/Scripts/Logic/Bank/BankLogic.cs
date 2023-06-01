@@ -32,6 +32,27 @@ namespace Game.Production.Logic
 
             return false;
         }
+
+        public void IncreaseCurrency(EntityWithCount diff)
+        {
+            if (_currency.TryGetValue(diff.Id, out EntityWithCount currency))
+            {
+                currency.Count += diff.Count;
+                _currency[diff.Id] = currency;
+            }
+        }
+        
+        public void DecreaseCurrency(EntityWithCount diff)
+        {
+            if (_currency.TryGetValue(diff.Id, out EntityWithCount currency))
+            {
+                if (diff.Count <= currency.Count)
+                {
+                    currency.Count -= diff.Count;
+                    _currency[diff.Id] = currency;
+                }
+            }
+        }
     } 
 }
 

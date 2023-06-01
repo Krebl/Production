@@ -10,6 +10,7 @@ namespace Game.Production.Logic
         public InventoryLogic inventory;
         public BankLogic bank;
         public WinLogic win;
+        public ProductionLogic production;
     }
 }
 
