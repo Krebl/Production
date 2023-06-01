@@ -3,7 +3,7 @@ using UniRx;
 
 namespace Game.Production.Logic
 {
-    internal class ProductionLogic : BaseDisposable
+    internal class ProductionLogic : BaseDisposable, IReadOnlyProductionLogic
     {
         public struct Ctx
         {
@@ -28,6 +28,8 @@ namespace Game.Production.Logic
         {
             
         }
+
+        public IReadOnlyReactiveDictionary<string, ReactiveProperty<int>> Timers => _timers;
     } 
 }
 

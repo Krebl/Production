@@ -36,13 +36,18 @@ namespace Game.Production.Start
                currency = currency
            });
            ProductionLogic production = new ProductionLogic(new ProductionLogic.Ctx());
+           CraftItemLogic craftItemLogic = new CraftItemLogic(new CraftItemLogic.Ctx
+           {
+               receipts = hub.availableReceipts
+           });
             
             Logic.Logic logic = new Logic.Logic
             {
                 win = winLogic,
                 inventory = inventoryLogic,
                 bank = bankLogic,
-                production = production
+                production = production,
+                craftItem = craftItemLogic
             };
 
             IResourceLoader resourceLoader = new ResourceLoader();
