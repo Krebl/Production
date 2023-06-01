@@ -10,6 +10,11 @@ namespace Game.Production.Command
 
         private readonly Ctx _ctx;
 
+        public CommandExecuter(Ctx ctx)
+        {
+            _ctx = ctx;
+        }
+
         public void Execute(IInstruction instruction)
         {
             if(instruction is IExecutorInstruction executorInstruction)

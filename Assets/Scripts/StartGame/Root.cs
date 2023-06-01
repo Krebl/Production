@@ -5,6 +5,8 @@ using Game.Production.Converters;
 using Game.Production.Logic;
 using Game.Production.Model;
 using UniRx;
+using Game.Production.Tools;
+using Game.Production.Command;
 
 namespace Game.Production.Start
 {
@@ -42,6 +44,21 @@ namespace Game.Production.Start
                 bank = bankLogic,
                 production = production
             };
+
+            IResourceLoader resourceLoader = new ResourceLoader();
+            ICommandExecuter commandExecuter = new CommandExecuter(new CommandExecuter.Ctx
+            {
+                logic = logic
+            });
+
+            GamePlay gamePlay = new GamePlay(new GamePlay.Ctx
+            {
+                resourceLoader = resourceLoader,
+                commandExecuter = commandExecuter,
+                logic = logic,
+                uiContainer = _uiContainer,
+                hub = hub
+            });
         }
     }
 }
