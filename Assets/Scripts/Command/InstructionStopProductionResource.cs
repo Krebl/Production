@@ -26,7 +26,7 @@ namespace Game.Production.Command
             {
                 if(_ctx.resource == null)
                     return;
-                logic.production.StartProduction(_ctx.idBuilding, _ctx.resource.Id);
+                logic.production.StartProduction(_ctx.idBuilding, _ctx.resource);
                 logic.inventory.AddResource(_ctx.resource);  
             }
         }

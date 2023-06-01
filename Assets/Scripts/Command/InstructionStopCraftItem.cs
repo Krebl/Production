@@ -21,12 +21,12 @@ namespace Game.Production.Command
         public void Apply(Logic.Logic logic)
         {
             if (_ctx.isForceStop)
-                logic.production.StopProduction(_ctx.idBuilding);
+                logic.craftItem.StopCraft(_ctx.idBuilding);
             else
             {
-                logic.production.StartProduction(_ctx.idBuilding);
                 if(_ctx.craftItem == null)
                     return;
+                logic.craftItem.StartCraft(_ctx.idBuilding, _ctx.craftItem);
                 logic.inventory.AddCraftItem(_ctx.craftItem);
             }
         }

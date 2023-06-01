@@ -44,6 +44,7 @@ namespace Game.Production.Logic
         public void StopProduction(string idBuilding)
         {
             _timers.Remove(idBuilding);
+            _currentProductionResource.Remove(idBuilding);
         }
 
         public IReadOnlyReactiveDictionary<string, ReactiveProperty<int>> Timers => _timers;

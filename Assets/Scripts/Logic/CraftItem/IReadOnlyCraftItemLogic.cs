@@ -8,6 +8,7 @@ namespace Game.Production.Logic
     {
         bool CanCraft(EntityWithCount[] ingredients);
         IReadOnlyReactiveDictionary<string, ReactiveProperty<int>> Timers { get; }
+        IReadOnlyReactiveDictionary<string, CraftItem> CurrentCraftingItem { get; }
     }
 }
 

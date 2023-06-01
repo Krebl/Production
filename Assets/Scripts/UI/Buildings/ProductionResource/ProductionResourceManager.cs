@@ -97,7 +97,7 @@ namespace Game.Production.UI
             _ctx.commandExecuter.Execute(new InstructionProductionResource(new InstructionProductionResource.Ctx
             {
                 idBuilding = _ctx.idBuiilding,
-                idResource = _selectedResource.Value.Id
+                resource = _selectedResource.Value
             }));
         }
 

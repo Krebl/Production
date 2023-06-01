@@ -1,4 +1,4 @@
-
+using Game.Production.Model;
 
 namespace Game.Production.Command
 {
@@ -7,7 +7,7 @@ namespace Game.Production.Command
         public struct Ctx
         {
             public string idBuilding;
-            public string idResource;
+            public EntityWithCount resource;
         }
 
         private readonly Ctx _ctx;
@@ -21,7 +21,7 @@ namespace Game.Production.Command
         {
             if(string.IsNullOrEmpty(_ctx.idBuilding))
                 return;
-            logic.production.StartProduction(_ctx.idBuilding, _ctx.idResource);
+            logic.production.StartProduction(_ctx.idBuilding, _ctx.resource);
         }
     }
 }
