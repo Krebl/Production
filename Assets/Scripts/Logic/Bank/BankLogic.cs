@@ -36,6 +36,8 @@ namespace Game.Production.Logic
             return false;
         }
 
+        public IReadOnlyReactiveDictionary<string, EntityWithCount> Currency => _ctx.currency;
+
         public void IncreaseCurrency(EntityWithCount diff)
         {
             if (_ctx.currency.TryGetValue(diff.Id, out EntityWithCount currency))

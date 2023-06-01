@@ -36,7 +36,8 @@ namespace Game.Production.Start
             {
                 resourceLoader = _ctx.resourceLoader,
                 openInventory = OpenInventory,
-                uiContainer = _ctx.uiContainer
+                uiContainer = _ctx.uiContainer,
+                currency = _ctx.logic.Bank.Currency
             });
             AddDispose(hudManager);
             CreateMainScreen();

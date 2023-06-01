@@ -5,7 +5,7 @@ namespace Game.Production.Tools
 {
     internal class ResourceLoader : IResourceLoader
     {
-        private Dictionary<string, Sprite> _loadedSprite;
+        private readonly Dictionary<string, Sprite> _loadedSprite = new Dictionary<string, Sprite>();
 
         public Sprite LoadSprite(string path)
         {

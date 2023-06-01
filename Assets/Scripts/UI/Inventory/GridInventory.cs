@@ -28,8 +28,10 @@ namespace Game.Production.UI
                 EntityWithCount result;
                 if (_ctx.logic.ContainResource(element.Id))
                     result = _ctx.logic.Resources[element.Id];
-                else
+                else if (_ctx.logic.ContainCraftItem(element.Id))
                     result = _ctx.logic.CraftItems[element.Id];
+                else
+                    result = element;
                 CreateSheet(result);
             }
         }

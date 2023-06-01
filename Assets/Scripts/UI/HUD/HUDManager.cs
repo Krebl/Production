@@ -1,4 +1,5 @@
 using System;
+using Game.Production.Model;
 using UnityEngine;
 using Game.Production.Tools;
 using UniRx;
@@ -15,6 +16,7 @@ namespace Game.Production.UI
             public Action openInventory;
             public IResourceLoader resourceLoader;
             public Transform uiContainer;
+            public IReadOnlyReactiveDictionary<string, EntityWithCount> currency;
         }
 
         private readonly Ctx _ctx;
@@ -36,6 +38,13 @@ namespace Game.Production.UI
                 viewDisposable = viewDisposable,
                 openInventory = _ctx.openInventory,
             });
+            CurrencyHUD currencyHUD = new CurrencyHUD(new CurrencyHUD.Ctx
+            {
+                resourceLoader = _ctx.resourceLoader,
+                currency = _ctx.currency,
+                gridForCurrency = view.CurrencyGrid
+            });
+            AddDispose(currencyHUD);
         }
     }
 }
