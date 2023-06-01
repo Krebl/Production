@@ -67,7 +67,9 @@ namespace Game.Production.Start
             _mainMenu?.Dispose();
             _location = new Location.Location(new Location.Location.Ctx
             {
-                
+                resourceLoader = _ctx.resourceLoader,
+                hub = _ctx.hub,
+                countProductionBuilding = countResourceBuildings
             });
         }
 
