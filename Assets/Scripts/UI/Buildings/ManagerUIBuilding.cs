@@ -31,6 +31,18 @@ namespace Game.Production.UI
             AddDispose(_ctx.openMarket.SubscribeWithSkip(OpenMarket));
             AddDispose(_ctx.openProduction.SubscribeWithSkip(OpenProduction));
             AddDispose(_ctx.openCraft.SubscribeWithSkip(OpenCraft));
+            MonitorTimer monitorTimerProduction = new MonitorTimer(new MonitorTimer.Ctx
+            {
+                timers = _ctx.logic.Production.Timers,
+                onCompleted = CompletedProduction
+            });
+            AddDispose(monitorTimerProduction);
+            MonitorTimer monitorTimerCraft = new MonitorTimer(new MonitorTimer.Ctx
+            {
+                timers = _ctx.logic.CraftItem.Timers,
+                onCompleted = CompletedCraft
+            });
+            AddDispose(monitorTimerCraft);
         }
 
         private void OpenMarket(string idBuilding)
@@ -82,6 +94,49 @@ namespace Game.Production.UI
                 logic = _ctx.logic.CraftItem,
                 uiContainer = _ctx.uiContainer
             });
+        }
+
+        private void CompletedCraft(string idBuilding)
+        {
+            if(string.IsNullOrEmpty(idBuilding))
+                return;
+            if(!_ctx.logic.CraftItem.CurrentCraftingItem.TryGetValue(idBuilding, out CraftItem craftItem))
+                return;
+            _ctx.commandExecuter.Execute(new InstructionStopCraftItem(new InstructionStopCraftItem.Ctx
+            {
+                idBuilding = idBuilding,
+                isForceStop = false,
+                craftItem = new CraftItem
+                {
+                    Id = craftItem.Id,
+                    Name = craftItem.Name,
+                    Count = 1,
+                    IconPath = craftItem.IconPath,
+                    SellingCost = craftItem.SellingCost,
+                }
+            }));
+            
+
+        }
+
+        private void CompletedProduction(string idBuilding)
+        {
+            if(string.IsNullOrEmpty(idBuilding))
+                return;
+            if(!_ctx.logic.Production.CurrentProductionResource.TryGetValue(idBuilding, out EntityWithCount resource))
+                return;
+            _ctx.commandExecuter.Execute(new InstructionStopProductionResource(new InstructionStopProductionResource.Ctx
+            {
+                idBuilding = idBuilding,
+                isForceStop = false,
+                resource = new EntityWithCount
+                {
+                    Id = resource.Id,
+                    Name = resource.Name,
+                    Count = 1,
+                    IconPath = resource.IconPath,
+                }
+            }));
         }
         
 

@@ -104,8 +104,6 @@ namespace Game.Production.UI
             AddDispose(_secondsForEndCraft.Subscribe(seconds =>
             {
                 isProcess.Value = seconds > 0;
-                if(seconds <= 0 && _ctx.logic.Timers.ContainsKey(_ctx.idBuilding))
-                    StopCraft(false);
             }));
             AddDispose(_firstIngredient.Subscribe(_ => DefineReceipt()));
             AddDispose(_secondIngredient.Subscribe(_ => DefineReceipt()));

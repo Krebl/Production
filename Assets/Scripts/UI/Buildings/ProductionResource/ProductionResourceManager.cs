@@ -92,8 +92,6 @@ namespace Game.Production.UI
             AddDispose(_secondsForEndProduction.Subscribe(seconds =>
             {
                 _isProcess.Value = seconds > 0;
-                if (seconds <= 0 && _ctx.logic.Timers.ContainsKey(_ctx.idBuiilding))
-                    StopProduction(false);
             }));
         }
 

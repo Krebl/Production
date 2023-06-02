@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Game.Production.Tools;
 using Game.Production.Model;
 using UniRx;
@@ -61,11 +62,12 @@ namespace Game.Production.Logic
 
         public void Clear()
         {
-            var values = _ctx.currency.Values;
+            var values = _ctx.currency.Keys.ToList();
             foreach (var currency in values)
             {
-                currency.Count--;
-                _ctx.currency[currency.Id] = currency;
+                EntityWithCount entity = _ctx.currency[currency];
+                entity.Count = 0;
+                _ctx.currency[currency] = entity;
             }
         }
     } 

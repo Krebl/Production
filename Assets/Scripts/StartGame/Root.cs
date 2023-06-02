@@ -29,6 +29,7 @@ namespace Game.Production.Start
            WinLogic winLogic = new WinLogic(new WinLogic.Ctx
            {
                currency = currency,
+               winCondition = converters.ConvertWinCondition()
            });
            InventoryLogic inventoryLogic = new InventoryLogic(new InventoryLogic.Ctx());
            BankLogic bankLogic = new BankLogic(new BankLogic.Ctx
@@ -43,7 +44,7 @@ namespace Game.Production.Start
            CraftItemLogic craftItemLogic = new CraftItemLogic(new CraftItemLogic.Ctx
            {
                receipts = hub.availableReceipts,
-               buildings = hub.productionResourceBuildings
+               buildings = hub.craftItemBuildings
            });
             
             Logic.Logic logic = new Logic.Logic
