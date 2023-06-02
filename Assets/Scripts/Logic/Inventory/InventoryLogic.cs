@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using UniRx;
 using Game.Production.Model;
 using Game.Production.Tools;
@@ -51,14 +53,32 @@ namespace Game.Production.Logic
         {
             if(resource == null)
                 return;
-            _resources[resource.Id] = resource;
+            if (_resources.TryGetValue(resource.Id, out EntityWithCount resourceInventory))
+            {
+                resourceInventory.Count += resource.Count;
+                _resources[resource.Id] = resourceInventory;
+            }
+            else
+            {
+                _resources[resource.Id] = resource;
+            }
+
         }
 
         public void AddCraftItem(CraftItem item)
         {
             if(item == null)
                 return;
-            _craftItems[item.Id] = item;
+
+            if (_craftItems.TryGetValue(item.Id, out CraftItem itemInventory))
+            {
+                itemInventory.Count += item.Count;
+                _craftItems[item.Id] = itemInventory;
+            }
+            else
+            {
+                _craftItems[item.Id] = item;
+            }
         }
 
         public void DecreaseResource(string id, int count)
@@ -91,6 +111,20 @@ namespace Game.Production.Logic
                 _craftItems[id] = item;
             else
                 _craftItems.Remove(id);
+        }
+        
+        public void Clear()
+        {
+            List<string> resources = _resources.Keys.ToList();
+            foreach (var resource in resources)
+            {
+                _resources.Remove(resource);
+            }
+            List<string> craftItems = _craftItems.Keys.ToList();
+            foreach (var craft in craftItems)
+            {
+                _craftItems.Remove(craft);
+            }
         }
     }
 }

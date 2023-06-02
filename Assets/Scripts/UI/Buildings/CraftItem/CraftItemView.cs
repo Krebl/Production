@@ -46,6 +46,11 @@ namespace Game.Production.UI
             }).AddTo(_ctx.viewDisposable);
             _ctx.resultItem.Subscribe(result =>
             {
+                if (result == null)
+                {
+                    iconResult.sprite = null;
+                    return;
+                }
                 iconResult.sprite = _ctx.resourceLoader.LoadSprite(result.IconPath);
             }).AddTo(_ctx.viewDisposable);
             _ctx.secondsLeftForEndCraft.Subscribe(seconds =>

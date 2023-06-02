@@ -1,6 +1,7 @@
 using UnityEngine;
 using Game.Production.Tools;
 using Game.Production.Tools.Reactive;
+using UnityEngine.EventSystems;
 
 namespace Game.Production.Location
 {
@@ -21,7 +22,7 @@ namespace Game.Production.Location
 
         private void Update()
         {
-            if (UnityEngine.Input.GetMouseButtonDown(0))
+            if (UnityEngine.Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() )
             {
                 Vector3 positionClick = Input.mousePosition;
                 Ray ray = _ctx.camera.ScreenPointToRay(positionClick);

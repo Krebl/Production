@@ -26,6 +26,7 @@ namespace Game.Production.Command
             {
                 if(_ctx.craftItem == null)
                     return;
+                logic.inventory.AddCraftItem(_ctx.craftItem);
                 Receipt receipt = logic.craftItem.GetReceipt(_ctx.craftItem);
                 foreach (var cost in receipt.CostCraft)
                 {

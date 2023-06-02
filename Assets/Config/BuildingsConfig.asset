@@ -16,20 +16,20 @@ MonoBehaviour:
   - Id: resource1
     Name: CreaterResource
     PrefabPath: Prefabs/production
-    SecondsProduction: 0
+    SecondsProduction: 20
   - Id: resource2
     Name: CreaterResource
     PrefabPath: Prefabs/production
-    SecondsProduction: 0
+    SecondsProduction: 25
   - Id: resource3
     Name: CreaterResource
     PrefabPath: Prefabs/production
-    SecondsProduction: 0
+    SecondsProduction: 30
   CrafterItemBuilding:
   - Id: crafter1
     Name: CrafterItem
     PrefabPath: Prefabs/craft
-    SecondsProduction: 0
+    SecondsProduction: 27
   Markets:
   - Id: market1
     Name: Market

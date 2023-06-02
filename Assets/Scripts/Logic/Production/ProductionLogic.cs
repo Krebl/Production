@@ -49,6 +49,21 @@ namespace Game.Production.Logic
 
         public IReadOnlyReactiveDictionary<string, ReactiveProperty<int>> Timers => _timers;
         public IReadOnlyReactiveDictionary<string, EntityWithCount> CurrentProductionResource => _currentProductionResource;
+
+        public void Clear()
+        {
+            List<string> keysBuilding = _currentProductionResource.Keys.ToList();
+            foreach (var key in keysBuilding)
+            {
+                _currentProductionResource.Remove(key);
+            }
+
+            keysBuilding = _timers.Keys.ToList();
+            foreach (var key in keysBuilding)
+            {
+                _timers.Remove(key);
+            }
+        }
     } 
 }
 

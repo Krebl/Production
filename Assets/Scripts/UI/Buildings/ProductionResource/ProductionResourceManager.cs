@@ -36,10 +36,13 @@ namespace Game.Production.UI
             _isProcess = new ReactiveProperty<bool>();
             _selectedResource = new ReactiveProperty<EntityWithCount>();
             _secondsForEndProduction = new ReactiveProperty<int>();
+            _ctx = ctx;
             if (_ctx.logic.CurrentProductionResource.TryGetValue(_ctx.idBuiilding, out EntityWithCount resource))
                 _selectedResource.Value = resource;
             if (_ctx.logic.Timers.TryGetValue(_ctx.idBuiilding, out ReactiveProperty<int> seconds))
-                _secondsForEndProduction.Value = seconds.Value;
+            {
+                _subscriptionOnTimer = seconds.Subscribe(secondsLeft => _secondsForEndProduction.Value = secondsLeft);  
+            }
             AddDispose(_ctx.logic.Timers.ObserveAdd().Subscribe(addEvent =>
             {
                 if (addEvent.Key == _ctx.idBuiilding)
@@ -57,7 +60,6 @@ namespace Game.Production.UI
                     _secondsForEndProduction.Value = 0;
                 }
             }));
-            _ctx = ctx;
             LoadOnScene();
         }
 
@@ -74,7 +76,7 @@ namespace Game.Production.UI
             {
                 viewDisposable = viewDisposable,
                 start = StartProduction,
-                stop = StopProduction,
+                stop = () => StopProduction(true),
                 close = _ctx.close,
                 isProcessState = _isProcess,
                 secondsLeftForEndProduction = _secondsForEndProduction
@@ -87,7 +89,12 @@ namespace Game.Production.UI
                 currentSelect = _selectedResource,
                 interactable = interactableSelector
             });
-            AddDispose(_secondsForEndProduction.Subscribe(seconds => _isProcess.Value = seconds > 0));
+            AddDispose(_secondsForEndProduction.Subscribe(seconds =>
+            {
+                _isProcess.Value = seconds > 0;
+                if (seconds <= 0 && _ctx.logic.Timers.ContainsKey(_ctx.idBuiilding))
+                    StopProduction(false);
+            }));
         }
 
         private void StartProduction()
@@ -101,15 +108,21 @@ namespace Game.Production.UI
             }));
         }
 
-        private void StopProduction()
+        private void StopProduction(bool isForce)
         {
             if(_selectedResource.Value == null)
                 return;
             _ctx.commandExecuter.Execute(new InstructionStopProductionResource(new InstructionStopProductionResource.Ctx
             {
                 idBuilding = _ctx.idBuiilding,
-                isForceStop = true,
-                resource = _selectedResource.Value
+                isForceStop = isForce,
+                resource = new EntityWithCount
+                {
+                    Id = _selectedResource.Value.Id,
+                    Name = _selectedResource.Value.Name,
+                    Count = 1,
+                    IconPath = _selectedResource.Value.IconPath,
+                }
             }));
         }
 

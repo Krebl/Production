@@ -32,21 +32,22 @@ namespace Game.Production.Logic
 
         public Receipt GetReceipt(EntityWithCount[] ingredients)
         {
-            bool found = false;
+
+            List<string> usedKeysIngredient = new List<string>();
             foreach (var receipt in _ctx.receipts)
             {
+                usedKeysIngredient.Clear();
                 for (int i = 0; i < ingredients.Length; i++)
                 {
                     if (!receipt.CostCraft.Exists(cost => cost.Id == ingredients[i].Id))
                     {
-                        found = false;
                         break;
                     }
-                    else
-                        found = true;
+                    else if(!usedKeysIngredient.Contains(ingredients[i].Id)) 
+                        usedKeysIngredient.Add(ingredients[i].Id);
                 }
 
-                if (found)
+                if (usedKeysIngredient.Count == receipt.CostCraft.Count)
                     return receipt;
             }
 
@@ -83,6 +84,21 @@ namespace Game.Production.Logic
         {
             _timers.Remove(idBuilding);
             _currentCraftingItem.Remove(idBuilding);
+        }
+        
+        public void Clear()
+        {
+            List<string> keysBuilding = _currentCraftingItem.Keys.ToList();
+            foreach (var key in keysBuilding)
+            {
+                _currentCraftingItem.Remove(key);
+            }
+
+            keysBuilding = _timers.Keys.ToList();
+            foreach (var key in keysBuilding)
+            {
+                _timers.Remove(key);
+            }
         }
     }
 }

@@ -40,6 +40,20 @@ namespace Game.Production.UI
             _ctx.interactable.Subscribe(interactable => _buttonNext.interactable = interactable)
                 .AddTo(_ctx.viewDisposable);
             _buttonNext.OnClickAsObservable().Subscribe(_ => SelectNext()).AddTo(_ctx.viewDisposable);
+            _ctx.currentSelect.Subscribe(selected =>
+            {
+                if(selected == null)
+                {
+                    _icon.sprite = null;
+                    _labelName.text = string.Empty;
+                    _labelCount.text = string.Empty;
+                    return;
+                }
+                _labelName.text = selected.Name;
+                _labelCount.text = selected.Count.ToString();
+                _icon.sprite = _ctx.resourceLoader.LoadSprite(selected.IconPath);
+                
+            }).AddTo(_ctx.viewDisposable);
         }
 
         private void SelectNext()
@@ -49,17 +63,11 @@ namespace Game.Production.UI
             {
                 _ctx.currentSelect.Value = null;
                 SetDefaultIndex();
-                _icon.sprite = null;
-                _labelName.text = string.Empty;
-                _labelCount.text = string.Empty;
             }
             else
             {
                 EntityWithCount variant = _ctx.variants[_indexVariant];
                 _ctx.currentSelect.Value = variant;
-                _labelName.text = variant.Name;
-                _labelCount.text = variant.Count.ToString();
-                _icon.sprite = _ctx.resourceLoader.LoadSprite(variant.IconPath);
             }
         }
 

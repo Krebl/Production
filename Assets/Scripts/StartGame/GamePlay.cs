@@ -53,7 +53,7 @@ namespace Game.Production.Start
 
         private void CreateMainScreen()
         {
-            ReactiveProperty<int> countProductionResourceBuilding = new ReactiveProperty<int>();
+            ReactiveProperty<int> countProductionResourceBuilding = new ReactiveProperty<int>(1);
             _mainMenu = new MainScreenManager(new MainScreenManager.Ctx
             {
                 start = () => StartGame(countProductionResourceBuilding.Value),
@@ -109,6 +109,8 @@ namespace Game.Production.Start
 
         private void CreateWin()
         {
+            _uiBuildings?.Dispose();
+            _inventoryView?.Dispose();
             _winView = new WinManager(new WinManager.Ctx
             {
                 resourceLoader = _ctx.resourceLoader,
@@ -119,6 +121,9 @@ namespace Game.Production.Start
 
         private void ReturnToMain()
         {
+            _ctx.commandExecuter.Execute(new InstructionWin(new InstructionWin.Ctx()));
+            _winView?.Dispose();
+            _location?.Dispose();
             CreateMainScreen();
         }
 

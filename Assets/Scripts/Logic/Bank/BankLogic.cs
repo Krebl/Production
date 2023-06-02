@@ -58,6 +58,16 @@ namespace Game.Production.Logic
                 }
             }
         }
+
+        public void Clear()
+        {
+            var values = _ctx.currency.Values;
+            foreach (var currency in values)
+            {
+                currency.Count--;
+                _ctx.currency[currency.Id] = currency;
+            }
+        }
     } 
 }
 

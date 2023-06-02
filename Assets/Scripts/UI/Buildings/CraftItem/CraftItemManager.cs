@@ -12,7 +12,7 @@ namespace Game.Production.UI
 {
     internal class CraftItemManager : BaseDisposable
     {
-        private const string PREFAB_UI = "Prefabs/ProductionResourceView";
+        private const string PREFAB_UI = "Prefabs/CraftItemView";
         
         public struct Ctx
         {
@@ -40,10 +40,11 @@ namespace Game.Production.UI
             _secondIngredient = new ReactiveProperty<EntityWithCount>();
             _result = new ReactiveProperty<CraftItem>();
             _secondsForEndCraft = new ReactiveProperty<int>();
+            _ctx = ctx;
             if (_ctx.logic.CurrentCraftingItem.TryGetValue(_ctx.idBuilding, out CraftItem craftItem))
                 _result.Value = craftItem;
             if (_ctx.logic.Timers.TryGetValue(_ctx.idBuilding, out ReactiveProperty<int> seconds))
-                _secondsForEndCraft.Value = seconds.Value;
+                _subscriptionOnTimer = seconds.Subscribe(secondsLeft => _secondsForEndCraft.Value = secondsLeft);  
             AddDispose(_ctx.logic.Timers.ObserveAdd().Subscribe(addEvent =>
             {
                 if (addEvent.Key == _ctx.idBuilding)
@@ -61,7 +62,6 @@ namespace Game.Production.UI
                     _secondsForEndCraft.Value = 0;
                 }
             }));
-            _ctx = ctx;
             LoadOnScene();
         }
         
@@ -113,10 +113,13 @@ namespace Game.Production.UI
             void DefineReceipt()
             {
                 if (_firstIngredient.Value == null || _secondIngredient.Value == null)
+                {
                     _result.Value = null;
+                    return;
+                }
                 Receipt receipt = _ctx.logic.GetReceipt(new EntityWithCount[]
                     {_firstIngredient.Value, _secondIngredient.Value});
-                _result.Value = receipt != null ? receipt.Result : null;
+                _result.Value = receipt?.Result;
             }
         }
 
@@ -139,7 +142,14 @@ namespace Game.Production.UI
             {
                 idBuilding = _ctx.idBuilding,
                 isForceStop = isForce,
-                craftItem = _result.Value
+                craftItem = new CraftItem()
+                {
+                    Id = _result.Value.Id,
+                    Name = _result.Value.Name,
+                    Count = 1,
+                    IconPath = _result.Value.IconPath,
+                    SellingCost = _result.Value.SellingCost
+                },
             }));
         }
 
