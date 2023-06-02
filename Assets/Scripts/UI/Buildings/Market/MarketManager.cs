@@ -54,12 +54,23 @@ namespace Game.Production.UI
                 resourceLoader = _ctx.resourceLoader,
                 interactable = new ReactiveProperty<bool>(true)
             });
+            ReactiveProperty<EntityWithCount> cost = new ReactiveProperty<EntityWithCount>();
             view.Cost.SetCtx(new CostView.Ctx
             {
-                cost = _sellingItem,
+                cost = cost,
                 resourceLoader = _ctx.resourceLoader,
                 viewDisposable = viewDisposable
             });
+            AddDispose(_sellingItem.Subscribe(item =>
+            {
+                if (item == null || !(item is CraftItem craftItem))
+                {
+                    cost.Value = null;
+                    return;
+                }
+
+                cost.Value = craftItem.SellingCost[0];
+            }));
         }
 
         private void TrySelling()

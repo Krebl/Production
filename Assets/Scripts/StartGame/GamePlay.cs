@@ -6,6 +6,7 @@ using Game.Production.Tools;
 using Game.Production.Command;
 using Game.Production.Model;
 using Game.Production.Logic;
+using Game.Production.Tools.Reactive;
 using Game.Production.UI;
 using UniRx;
 
@@ -27,6 +28,7 @@ namespace Game.Production.Start
         private IDisposable _mainMenu;
         private IDisposable _winView;
         private IDisposable _inventoryView;
+        private IDisposable _uiBuildings;
 
         private IDisposable _location;
 
@@ -65,13 +67,30 @@ namespace Game.Production.Start
         {
             if(countResourceBuildings <= 0)
                 return;
+            ReactiveEvent<string> openMarket = new ReactiveEvent<string>();
+            ReactiveEvent<string> openCraft = new ReactiveEvent<string>();
+            ReactiveEvent<string> openProduction = new ReactiveEvent<string>();
             _mainMenu?.Dispose();
             _location = new Location.Location(new Location.Location.Ctx
             {
                 resourceLoader = _ctx.resourceLoader,
                 hub = _ctx.hub,
                 countProductionBuilding = countResourceBuildings,
-                camera = _ctx.camera
+                camera = _ctx.camera,
+                openCraft = openCraft.Notify,
+                openMarket = openMarket.Notify,
+                openProduction = openProduction.Notify
+            });
+            _uiBuildings = new ManagerUIBuilding(new ManagerUIBuilding.Ctx
+            {
+                openCraft = openCraft,
+                openMarket = openMarket,
+                openProduction = openProduction,
+                resourceLoader = _ctx.resourceLoader,
+                commandExecuter = _ctx.commandExecuter,
+                uiContainer = _ctx.uiContainer,
+                logic = _ctx.logic,
+                hub = _ctx.hub
             });
         }
 
@@ -109,6 +128,7 @@ namespace Game.Production.Start
             _winView?.Dispose();
             _inventoryView?.Dispose();
             _location?.Dispose();
+            _uiBuildings?.Dispose();
             base.OnDispose();
         }
     }

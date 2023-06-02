@@ -26,6 +26,12 @@ namespace Game.Production.UI
             _ctx = ctx;
             _ctx.cost.Subscribe(cost =>
             {
+                if (cost == null)
+                {
+                    _iconCost.sprite = null;
+                    _labelCost.text = string.Empty;
+                    return;
+                }
                 _iconCost.sprite = _ctx.resourceLoader.LoadSprite(cost.IconPath);
                 _labelCost.text = cost.Count.ToString();
             }).AddTo(_ctx.viewDisposable);

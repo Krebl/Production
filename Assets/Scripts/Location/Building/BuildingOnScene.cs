@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 using Game.Production.Tools;
 using Game.Production.Model;
 using Game.Production.Tools.Reactive;
+using Object = UnityEngine.Object;
 
 namespace Game.Production.Location
 {
@@ -13,6 +15,7 @@ namespace Game.Production.Location
             public IResourceLoader resourceLoader;
             public Transform point;
             public IReadOnlyReactiveEvent<RaycastHit> clicked;
+            public Action<string> openView;
         }
 
         private readonly Ctx _ctx;
@@ -33,7 +36,8 @@ namespace Game.Production.Location
                 BuildingOnSceneView checkedBuild = hit.transform.GetComponent<BuildingOnSceneView>();
                 if (checkedBuild != null && checkedBuild.Id == _ctx.building.Id)
                 {
-                    Debug.Log("CLICKED");
+                    Debug.Log($"CLICKED {_ctx.building.Id}");
+                    _ctx.openView?.Invoke(ctx.building.Id);
                 }
             }));
         }

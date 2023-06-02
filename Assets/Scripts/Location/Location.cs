@@ -1,7 +1,9 @@
+using System;
 using UnityEngine;
 using Game.Production.Tools;
 using Game.Production.Model;
 using Game.Production.Tools.Reactive;
+using Object = UnityEngine.Object;
 
 namespace Game.Production.Location
 {
@@ -14,6 +16,9 @@ namespace Game.Production.Location
             public int countProductionBuilding;
             public Hub hub;
             public Camera camera;
+            public Action<string> openMarket;
+            public Action<string> openProduction;
+            public Action<string> openCraft;
         }
 
         private readonly Ctx _ctx;
@@ -35,7 +40,8 @@ namespace Game.Production.Location
                     building = _ctx.hub.markets[0],
                     resourceLoader = _ctx.resourceLoader,
                     point = view.SpawnPointMarkets[0],
-                    clicked = clicked
+                    clicked = clicked,
+                    openView = _ctx.openMarket
                 });
                 AddDispose(market);
             }
@@ -46,7 +52,8 @@ namespace Game.Production.Location
                     building = _ctx.hub.craftItemBuildings[0],
                     resourceLoader = _ctx.resourceLoader,
                     point = view.SpawnPointForCraft[0],
-                    clicked = clicked
+                    clicked = clicked,
+                    openView = _ctx.openCraft
                 });
                 AddDispose(craft);
             }
@@ -60,7 +67,8 @@ namespace Game.Production.Location
                     building = _ctx.hub.productionResourceBuildings[i],
                     resourceLoader = _ctx.resourceLoader,
                     point = view.SpawnPointForProduction[i],
-                    clicked = clicked
+                    clicked = clicked,
+                    openView = _ctx.openProduction
                 });
                 AddDispose(production);
             }
