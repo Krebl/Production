@@ -20,6 +20,7 @@ namespace Game.Production.Start
             public Hub hub;
             public IReadOnlyLogic logic;
             public Transform uiContainer;
+            public Camera camera;
         }
 
         private readonly Ctx _ctx;
@@ -69,7 +70,8 @@ namespace Game.Production.Start
             {
                 resourceLoader = _ctx.resourceLoader,
                 hub = _ctx.hub,
-                countProductionBuilding = countResourceBuildings
+                countProductionBuilding = countResourceBuildings,
+                camera = _ctx.camera
             });
         }
 

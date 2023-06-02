@@ -1,6 +1,7 @@
 using UnityEngine;
 using Game.Production.Tools;
 using Game.Production.Model;
+using Game.Production.Tools.Reactive;
 
 namespace Game.Production.Location
 {
@@ -12,6 +13,7 @@ namespace Game.Production.Location
             public IResourceLoader resourceLoader;
             public int countProductionBuilding;
             public Hub hub;
+            public Camera camera;
         }
 
         private readonly Ctx _ctx;
@@ -25,13 +27,15 @@ namespace Game.Production.Location
             LocationView view = objOnScene.GetComponent<LocationView>();
             view.SetCtx(new LocationView.Ctx());
 
+            ReactiveEvent<RaycastHit> clicked = new ReactiveEvent<RaycastHit>();
             if (view.SpawnPointMarkets.Length > 0)
             {
                 BuildingOnScene market = new BuildingOnScene(new BuildingOnScene.Ctx
                 {
                     building = _ctx.hub.markets[0],
                     resourceLoader = _ctx.resourceLoader,
-                    point = view.SpawnPointMarkets[0]
+                    point = view.SpawnPointMarkets[0],
+                    clicked = clicked
                 });
                 AddDispose(market);
             }
@@ -41,7 +45,8 @@ namespace Game.Production.Location
                 {
                     building = _ctx.hub.craftItemBuildings[0],
                     resourceLoader = _ctx.resourceLoader,
-                    point = view.SpawnPointForCraft[0]
+                    point = view.SpawnPointForCraft[0],
+                    clicked = clicked
                 });
                 AddDispose(craft);
             }
@@ -54,10 +59,18 @@ namespace Game.Production.Location
                 {
                     building = _ctx.hub.productionResourceBuildings[i],
                     resourceLoader = _ctx.resourceLoader,
-                    point = view.SpawnPointForProduction[i]
+                    point = view.SpawnPointForProduction[i],
+                    clicked = clicked
                 });
                 AddDispose(production);
             }
+
+            ClickListener clickListener = view.GetComponent<ClickListener>();
+            clickListener.SetCtx(new ClickListener.Ctx
+            {
+                camera = _ctx.camera,
+                clicked = clicked
+            });
         }
     }
 }

@@ -154,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameConfig: {fileID: 11400000, guid: 4ec16c82e327b834cb2c115581a4444c, type: 2}
   _uiContainer: {fileID: 2030769540}
+  _camera: {fileID: 963194227}
 --- !u!4 &675668964
 Transform:
   m_ObjectHideFlags: 0

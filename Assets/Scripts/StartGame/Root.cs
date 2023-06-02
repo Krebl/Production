@@ -14,6 +14,7 @@ namespace Game.Production.Start
     {
         [SerializeField] private GameConfig _gameConfig;
         [SerializeField] private Transform _uiContainer;
+        [SerializeField] private Camera _camera;
 
         public void Start()
         {
@@ -66,7 +67,8 @@ namespace Game.Production.Start
                 commandExecuter = commandExecuter,
                 logic = logic,
                 uiContainer = _uiContainer,
-                hub = hub
+                hub = hub,
+                camera = _camera
             });
         }
     }
